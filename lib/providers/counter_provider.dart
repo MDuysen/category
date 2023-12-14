@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_application_3/models/category.dart';
+import 'package:flutter_application_3/styles/theme_style.dart';
 import '/models/activity.dart';
 import '/models/meal.dart';
 import '/service/api.dart';
@@ -9,30 +11,25 @@ class CounterProvider extends ChangeNotifier {
   double height = 500.0;
   ActivityModel? activityModel;
   List<MealModel>? meals;
+  List<CategoryModel>? categories;
   bool isLoading = false;
 
   void incrementCounter() {
     counter++;
-    color = Colors.yellow;
-    height += 20;
+    color = Colors.green;
+    height = 400;
     notifyListeners();
   }
 
   void decrementCounter() {
     counter--;
-    height -= 20;
-    color = Colors.red;
+    height = 450;
+    color = Colors.orange;
     notifyListeners();
   }
 
   void getActivity() async {
     setStatus(true);
-  }
-
-  setActivity(data) {
-    activityModel = data;
-    setStatus(false);
-    notifyListeners();
   }
 
   setStatus(value) {
@@ -45,9 +42,19 @@ class CounterProvider extends ChangeNotifier {
     setMeal(data);
   }
 
-  setMeal(data) {
+  setMeal(List<MealModel>? data) {
     meals = data;
     setStatus(false);
+    notifyListeners();
+  }
+
+  void listCategories() async {
+    List<CategoryModel> data = await Api().listCategories();
+    setCategories(data);
+  }
+
+  setCategories(data) {
+    categories = data;
     notifyListeners();
   }
 }
